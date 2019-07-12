@@ -27,6 +27,7 @@ class RandomStockPrices:
         returns = np.zeros((days, self.num_assets))
         initial_prices = 5.0 + np.random.gamma(2, 30, self.num_assets)
         #plt.hist(initial_prices)
+        #plt.hist(initial_prices)
         #plt.show()
         distributions = list(zip(
             np.random.normal(self.mean_mean, self.mean_std, self.num_assets),
@@ -47,11 +48,8 @@ class RandomStockPrices:
         self.returns = pd.DataFrame(returns, index=dates, columns=tickers)
 
 def tester():
-    mc = RandomStockPrices(num_assets=20)
-    print(mc.returns)
-    print(mc.prices)
-    print(mc.distributions)
-    ax = mc.prices.plot(ylim=(2,40))
+    mc = RandomStockPrices()
+    ax = mc.prices.head(100).plot(ylim=(2,40))
     ax.tick_params(labelright=True, right=True)
     plt.show()
 
