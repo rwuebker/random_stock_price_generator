@@ -33,10 +33,8 @@ class RandomStockPrices:
             drift = (mean - (std**2)/2)*dt
             diffusion = std * sr_dt * np.random.randn(days)
             returns[:,i] = drift + diffusion
-            price = initial_prices[i]
-            for j in range(days):
-                price = price * (1+returns[j,i])
-                prices[j,i] = price
+            exp_returns = np.exp(returns[:,i])
+            prices[:,i] = initial_prices[i] * np.cumprod(exp_returns)
 
         tickers = ['TICK{}'.format(i) for i in range(self.num_assets)]
         self.prices = pd.DataFrame(prices, index=dates, columns=tickers)
@@ -67,9 +65,8 @@ class RandomStockPrices:
 
         for j in range(self.num_assets):
             price = initial_prices[j]
-            for i in range(self.years*252):
-                price = price * (1+returns[i,j])
-                prices[i,j] = price
+            exp_returns = np.exp(returns[:,j])
+            prices[:,j] = price * np.cumprod(exp_returns)
 
         tickers = ['TICK{}'.format(i) for i in range(self.num_assets)]
         self.prices = pd.DataFrame(prices, index=dates, columns=tickers)
