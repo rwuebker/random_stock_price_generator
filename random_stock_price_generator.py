@@ -7,17 +7,13 @@ import matplotlib.pyplot as plt
 
 class RandomStockPrices:
     def __init__(self, start_date='2018-01-01', num_days=252, num_assets=1000,
-                 mean_mean=0.05, mean_std=0.05, std_low=0.08, std_high=0.50):
-        if num_days >= 300:
-            raise Exception('days must be under 300')
+                 mean_mean=0.05, mean_std=0.05):
 
         self.start_date = start_date
         self.num_days = num_days
         self.num_assets = num_assets
         self.mean_mean=mean_mean
         self.mean_std = mean_std
-        self.std_low = std_low
-        self.std_high = std_high
         self._create_prices()
 
     def _create_prices(self):
@@ -31,7 +27,7 @@ class RandomStockPrices:
         #plt.show()
         distributions = list(zip(
             np.random.normal(self.mean_mean, self.mean_std, self.num_assets),
-            np.random.uniform(self.std_low, self.std_high, self.num_assets)))
+            0.04 + np.random.gamma(6, 2, self.num_assets) / 100))
         self.distributions = distributions
         for i in range(self.num_assets):
             mean, std = distributions[i]
